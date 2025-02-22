@@ -8,7 +8,7 @@ import User from "@/models/User";
 export async function GET() {
   try {
     const headersList = headers();
-    const token = headersList.get("token");
+    const token = (await headersList).get("token");
 
     // Valido que haya token
     if (!token) {
