@@ -8,8 +8,8 @@ export async function middleware (request: NextRequest) {
     if (!token) {
       return NextResponse.redirect(new URL('/', request.url))
     }
-
-    const res = await fetch('http://localhost:3000/api/auth/check', {
+    
+    const res = await fetch(`${process.env.BASE_URL}/api/auth/check`, {
       headers: {
         token: token.value
       }

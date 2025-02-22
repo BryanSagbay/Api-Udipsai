@@ -62,11 +62,13 @@ export async function POST(request: NextRequest) {
     );
 
     response.cookies.set("auth_cookie", token, {
+      httpOnly: true, 
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: "lax",
       maxAge: 86400,
       path: "/",
     });
+    
 
     return response;
   } catch (error) {
