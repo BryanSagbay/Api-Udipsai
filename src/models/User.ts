@@ -9,7 +9,6 @@ export interface IUser {
 }
 
 export interface IUserSchema extends Document {
-  _id?: ObjectId | string | undefined;
   email: string;
   password: string;
   createdAt?: string;
