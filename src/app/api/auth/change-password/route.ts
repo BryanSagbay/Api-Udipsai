@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
     await connectMongoDB();
 
     const headersList = headers();
-    const token = headersList.get("token");
+    const token = (await headersList).get("token");
 
     // Verificar que haya token
     if (!token) {
