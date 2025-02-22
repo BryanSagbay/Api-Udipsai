@@ -19,7 +19,14 @@ export async function GET() {
     }
 
     try {
-      const isTokenValid = jwt.verify(token, "secreto");
+      if (!process.env.JWT_SECRET) {
+        return NextResponse.json(
+            { message: "JWT_SECRET no está definido en las variables de entorno" },
+            { status: 500 }
+        );
+      }
+
+      const isTokenValid = jwt.verify(token, process.env.JWT_SECRET);
       // @ts-ignore
       const { data } = isTokenValid;
 

@@ -4,7 +4,7 @@ import { messages } from "@/utils/messages";
 import User from "@/models/User";
 import { Resend } from "resend";
 import jwt from "jsonwebtoken";
-import { EmailTemplate } from "@/components/EmailTemplate";
+import { EmailTemplate } from "@/app/components";
 
 const resend = new Resend("re_cjoG7Y1E_EsF32pPsAAqrdQRH2q2nj1pX");
 
@@ -30,11 +30,18 @@ export async function POST(request: NextRequest) {
       userId: userFind._id,
     };
 
-    const token = jwt.sign({ data: tokenData }, "secreto", {
+    if (!process.env.JWT_SECRET) {
+      return NextResponse.json(
+          { message: "JWT_SECRET no está definido en las variables de entorno" },
+          { status: 500 }
+      );
+    }
+
+    const token = jwt.sign({ data: tokenData }, process.env.JWT_SECRET, {
       expiresIn: 86400,
     });
 
-    const forgetUrl = `http://localhost:3000/change-password?token=${token}`;
+    const forgetUrl = `${process.env.BASE_URL}/change-password?token=${token}`;
 
     // @ts-ignore
     await resend.emails.send({

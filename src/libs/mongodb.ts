@@ -1,12 +1,14 @@
 import mongoose from "mongoose";
 
-const MONGO_URL = "mongodb://127.0.0.1/udipsai";
-
 export const connectMongoDB = async () => {
   try {
-    await mongoose.connect(MONGO_URL);
-    console.log("Connected to MongoDB.");
+      if (!process.env.MONGODB_URL) {
+          throw new Error("MONGODB_URI no está definido en las variables de entorno");
+      }
+
+      await mongoose.connect(process.env.MONGODB_URL);
+      console.log('Conectado a la base de datos');
   } catch (error) {
-    console.log(error);
+      console.error('Error al conectar a la base de datos:', error);
   }
 };

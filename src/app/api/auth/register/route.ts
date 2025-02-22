@@ -66,7 +66,16 @@ export async function POST(request: NextRequest) {
 
     await newUser.save();
 
-    const token = jwt.sign({ data: rest }, "secreto", {
+
+    // Verificamos que JWT_SECRET esté definido
+    if (!process.env.JWT_SECRET) {
+      return NextResponse.json(
+          { message: "JWT_SECRET no está definido en las variables de entorno" },
+          { status: 500 }
+      );
+    }
+        
+    const token = jwt.sign({ data: rest },  process.env.JWT_SECRET, {
       expiresIn: 86400,
     });
 
